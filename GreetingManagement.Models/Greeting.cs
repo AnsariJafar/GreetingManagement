@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GreetingManagement.Models
 {
-    internal class Greeting
+    internal class Greeting:BaseModel
     {
-        public int Id { get; set; }
+      
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DOB { get; set; }
