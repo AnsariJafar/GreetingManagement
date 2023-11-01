@@ -18,9 +18,11 @@ namespace GreetingManagement.Models
         public string LastName { get; set; }
         [Required]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString ="{0:yyyy-MM-dd}")]
         public DateTime DOB { get; set; }
         [Required]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DOJ { get; set; }
         [Required]
         public bool IsProcessed { get; set; }

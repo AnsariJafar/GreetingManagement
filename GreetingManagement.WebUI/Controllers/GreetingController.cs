@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using GreetingManagement.BusinessLogic.Repositories.Impl;
 using GreetingManagement.BusinessLogic.Repositories.Interface;
+using GreetingManagement.Models;
+using GreetingManagement.WebUI.Models;
 
 namespace GreetingManagement.WebUI.Controllers
 {
@@ -18,13 +20,26 @@ namespace GreetingManagement.WebUI.Controllers
         // GET: Greeting
         public ActionResult Index()
         {
-            return View(greetingRepository.GetAll());
+            var greetingList = greetingRepository.GetAll().Where(x => x.IsActive == true);
+            var greetingVMList = greetingList.Select(x => new GreetingViewModel()
+            {
+                Contact=x.Contact,
+                DOB=x.DOB.ToString("dd-MMM-yyyy"),
+                DOJ=x.DOJ.ToString("dd-MMM-yyyy"),
+                Email=x.Email,
+                Id=x.Id,
+                Name=$"{x.FirstName}   {x.LastName}"
+
+
+            });
+            return View(greetingVMList);
         }
 
         // GET: Greeting/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var greetingObject = greetingRepository.GetById(id);
+            return View(greetingObject);
         }
 
         // GET: Greeting/Create
@@ -35,10 +50,15 @@ namespace GreetingManagement.WebUI.Controllers
 
         // POST: Greeting/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Greeting greeting )
         {
             try
             {
+                greeting.IsActive = true;
+                greeting.IsProcessed = false;
+
+                greetingRepository.Insert(greeting);
+                greetingRepository.Save();
                 // TODO: Add insert logic here
 
                 return RedirectToAction("Index");
@@ -52,15 +72,18 @@ namespace GreetingManagement.WebUI.Controllers
         // GET: Greeting/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+           var greetingObject = greetingRepository.GetById(id);
+            return View(greetingObject);
         }
 
         // POST: Greeting/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit( Greeting greeting  )
         {
             try
             {
+                greetingRepository.Update(greeting);
+                greetingRepository.Save();
                 // TODO: Add update logic here
 
                 return RedirectToAction("Index");
@@ -74,7 +97,8 @@ namespace GreetingManagement.WebUI.Controllers
         // GET: Greeting/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            
+            return View(greetingRepository.GetAll().FirstOrDefault(x => x.Id == id));
         }
 
         // POST: Greeting/Delete/5
@@ -83,6 +107,13 @@ namespace GreetingManagement.WebUI.Controllers
         {
             try
             {
+                var greetingObject = greetingRepository.GetAll().FirstOrDefault(x => x.Id == id);
+
+                greetingObject.IsActive = false;
+
+                greetingRepository.Update(greetingObject);
+                greetingRepository.Save();
+                return RedirectToAction("Index");
                 // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
