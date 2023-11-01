@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Greeting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

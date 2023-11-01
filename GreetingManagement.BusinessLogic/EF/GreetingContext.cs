@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GreetingManagement.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace GreetingManagement.BusinessLogic.EF
 
         }
 
-        public System.Data.Entity.DbSet<GreetingManagement.Models.Greeting> Greetings { get; set; }
+        public DbSet<Greeting> Greetings { get; set; }
+        public DbSet<Person> Person { get; set; }
     }
 }
